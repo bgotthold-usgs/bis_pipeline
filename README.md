@@ -1,14 +1,8 @@
-# USNVC Data Processing Pipeline
-Externalized USNVC logic for consumption by the bis data pipeline. 
+# Bis Data Processing Pipeline
+Externalized pipeline logic for consumption by the bis data pipeline. 
 
 ![Pipeline AWS Infrastructure](assets/usnvc.png)
 
-
-## To Run Locally
--  In `process.py` uncomment the code surrounding the `main()` method.
-- ```
-    python3 pyusnvc/process.py
-    ```
 
 ## Structure 
 - A pipeline processing package should have an entry file which we will infer the pipeline name from.

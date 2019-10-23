@@ -23,9 +23,10 @@ Externalized USNVC logic for consumption by the bis data pipeline.
 ### Inputs
 - `path`: The location of source data requested by this pipeline
 - `file_name`: The name of the source data file or directory
-- `ch_ledger`: An instance of the change leger class.
+- `ch_ledger`: An instance of the change leger class used to log providence within the bis pipeline.
     - ch_ledger.log_change_event(row_id, change_name, change_description, function_name, source, result)
     - Example: ch_ledger.log_change_event("Field Creation", "Creating feature_id field from REG_NUM", source_data, changed_data)
+    - TODO: We plan to make this a public package in the future. 
 - `send_final_result`: Instance of a method that accepts a python object representation of a single row of completed, processed data
 - `send_to_stage`: Instance of a method that accepts a python object representation of a single row of data that will be processed by the next stage and the integer stage to send it to. 
 - `previous_stage_result`: The python object from the previous stage provided by the developer when calling send_to_stage.

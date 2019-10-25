@@ -17,17 +17,37 @@ Externalized pipeline logic for consumption by the bis data pipeline.
 ### Inputs
 - `path`: The location of source data requested by this pipeline
 - `file_name`: The name of the source data file or directory
-- `ch_ledger`: An instance of the change leger class used to log providence within the bis pipeline.
-    - ch_ledger.log_change_event(row_id, file_name, function_name, change_name, change_description, source, result)
-    - Example: ch_ledger.log_change_event(element_global_id, 'usnvc.py', 'build_unit',
-                            'Finish Unit Doc', 'Finished building usnvc unit doc',
-                            {}, unitDoc)
-    - TODO: We plan to make this a public package in the future. 
-- `send_final_result`: Instance of a method that accepts a python object representation of a single row of completed, processed data
+- `ch_ledger`: An instance of the change leger class used to log providence within the bis pipeline. See additional information below.
+- `send_final_result`: Instance of a method that accepts a python object representation of a single row of completed, processed data. See additional information below.
 - `send_to_stage`: Instance of a method that accepts a python object representation of a single row of data that will be processed by the next stage and the integer stage to send it to. 
 - `previous_stage_result`: The python object from the previous stage provided by the developer when calling send_to_stage.
 ### Outputs
 -  A single integer representing the number of rows manipulated by the method.
+
+
+## Notes on `ch_ledger()`
+- Used to log providence within the bis pipeline
+  ```
+  ch_ledger.log_change_event(row_id, file_name, function_name, change_name, change_description, source, result)
+  ```
+- In the following example, we log a process that extracts a state geometry from a shapefile and returns the geojson representation of that shape. This takes place within a function called generate_geom() and a file called state_shapes.py. 
+  ```
+  ch_ledger.log_change_event('US_States_and_Territories:state_fipscode:10',
+                             'state_shapes.py', 'generate_geom',
+                             'Extract State geometry',
+                             'Extract the geometry for this state from a shapefile and add it to the document as geojson',
+                             {'geojson': None},
+                             {'geojson': {
+                                  "type": "Feature",
+                                  "properties": {"name":"Delaware"},
+                                  "geometry": {
+                                      "type": "Polygon",
+                                      "coordinates": [...]
+                                  }
+                             }}
+                            )
+  ```
+- TODO: We plan to make this a public package in the future. 
 
 ## Notes on `send_final_result()`
 - It is the responsibility of the domain expert to verify the documents produced as it relates to the subject.
